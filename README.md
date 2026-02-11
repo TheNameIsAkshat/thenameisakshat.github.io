@@ -1,6 +1,6 @@
-# Sarthak Sharma – Portfolio
+# Akshat Srivastava – Portfolio
 
-A single-page portfolio replica with Hero, About, What I do, Projects, Experience, and Footer.
+A single-page portfolio with Hero, About, What I do, Projects, Experience, and Footer.
 
 ## Run locally
 
