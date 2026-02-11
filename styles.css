@@ -28,6 +28,9 @@
 
 html {
   scroll-behavior: smooth;
+  /* Prevent iOS Safari from resizing text and breaking mobile font sizes */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
 }
 
 body {
@@ -41,6 +44,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  -webkit-tap-highlight-color: transparent;
 }
 
 img {
@@ -49,11 +56,18 @@ img {
   display: block;
 }
 
+/* --- Safe area for notched devices (iPhone X+, Android) --- */
+body {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
 /* --- Container --- */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 0 24px;
+  padding-left: max(24px, env(safe-area-inset-left));
+  padding-right: max(24px, env(safe-area-inset-right));
 }
 
 /* --- Navigation --- */
@@ -62,6 +76,8 @@ img {
   position: sticky;
   top: 0;
   z-index: 100;
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
 .nav-inner {
@@ -79,13 +95,16 @@ img {
   display: none;
   background: none;
   border: none;
-  padding: 8px;
+  padding: 12px;
+  min-width: 44px;
+  min-height: 44px;
   cursor: pointer;
   color: var(--text-white);
   flex-direction: column;
   gap: 5px;
   align-items: center;
   justify-content: center;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .nav-toggle-bar {
@@ -180,15 +199,16 @@ img {
   z-index: 1;
 }
 
+/* Fluid typography: scales between 2rem and 4rem on large screens */
 .hero-greeting {
-  font-size: 4rem;
+  font-size: clamp(1.25rem, 2.5vw + 1rem, 4rem);
   color: var(--text-body);
   margin-bottom: 6px;
   font-weight: 400;
 }
 
 .hero-name {
-  font-size: 4rem;
+  font-size: clamp(1.5rem, 3vw + 1.25rem, 4rem);
   font-weight: 700;
   color: var(--text-primary);
   line-height: 1.15;
@@ -633,6 +653,7 @@ img {
 .footer {
   background: var(--bg-footer);
   padding: 40px 24px;
+  padding-bottom: max(40px, env(safe-area-inset-bottom));
   text-align: center;
 }
 
@@ -668,52 +689,11 @@ img {
   scroll-margin-top: 60px;
 }
 
-/* --- Mobile responsive --- */
+/* --- Mobile responsive (phones, small tablets) --- */
 @media (max-width: 768px) {
   .container {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-  .nav-inner {
-    justify-content: space-between;
-    flex-direction: row-reverse;
-    padding: 14px 16px;
-  }
-  .nav-toggle {
-    display: flex;
-  }
-  .nav-links {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    width: 100%;
-    background: var(--bg-header);
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: stretch;
-    gap: 0;
-    padding: 16px 0;
-    max-height: 0;
-    overflow: hidden;
-    opacity: 0;
-    transition: max-height 0.3s ease, opacity 0.2s ease;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-  }
-  .nav-header.nav-open .nav-links {
-    max-height: 400px;
-    opacity: 1;
-  }
-  .nav-links a {
-    display: block;
-    width: 100%;
-    box-sizing: border-box;
-    padding: 12px 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  .nav-links a:last-child {
-    border-bottom: none;
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
   }
 
   .hero {
@@ -739,14 +719,15 @@ img {
     width: 100%;
     margin-top: 24px;
   }
+  /* Same size greeting + name on mobile; fluid between 2rem and 2.75rem */
   .hero-greeting {
-    font-size: 4rem;
+    font-size: clamp(2rem, 6vw + 1.25rem, 2.75rem);
     margin-bottom: 4px;
   }
   .hero-name {
     white-space: normal;
     text-align: left;
-    font-size: 4rem;
+    font-size: clamp(2rem, 6vw + 1.25rem, 2.75rem);
     line-height: 1.2;
     margin-bottom: 12px;
   }
@@ -846,12 +827,20 @@ img {
     font-size: 1.1rem;
   }
   .btn-projects {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
     background: #8B6914;
     text-align: center;
+    min-height: 44px;
+    padding: 14px 32px;
+  }
+  .btn-card {
+    min-height: 44px;
+    padding: 12px 20px;
   }
 
   .projects {
@@ -877,7 +866,11 @@ img {
   }
 
   .experience {
-    padding: 48px 0 60px;
+    padding: 48px 20px 60px;
+  }
+  .experience .container {
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
   }
   .experience-header {
     margin-bottom: 32px;
@@ -918,13 +911,61 @@ img {
   }
 }
 
+/* Tablet: hamburger menu so nav doesn't wrap (iPad, Android tablets) */
+@media (max-width: 1024px) {
+  .nav-inner {
+    justify-content: space-between;
+    flex-direction: row-reverse;
+    padding: 14px max(16px, env(safe-area-inset-left)) 14px max(16px, env(safe-area-inset-right));
+  }
+  .nav-toggle {
+    display: flex;
+  }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: var(--bg-header);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0;
+    padding: 16px 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.3s ease, opacity 0.2s ease;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+  .nav-header.nav-open .nav-links {
+    max-height: 400px;
+    opacity: 1;
+  }
+  .nav-links a {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 24px;
+    min-height: 44px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .nav-links a:last-child {
+    border-bottom: none;
+  }
+}
+
 @media (max-width: 480px) {
   .container {
-    padding: 0 16px;
+    padding: 0 max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
   }
   .hero-name,
   .hero-greeting {
-    font-size: 3rem;
+    font-size: clamp(2rem, 8vw, 2.5rem);
   }
   .hero-role {
     font-size: 1rem;
