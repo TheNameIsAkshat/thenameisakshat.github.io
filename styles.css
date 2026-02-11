@@ -152,11 +152,16 @@ img {
   position: relative;
 }
 
+/* Desktop: image left, text right */
 .hero-image-wrap {
   flex-shrink: 0;
   position: relative;
   z-index: 2;
   top: 22px;
+  order: 1;
+}
+.hero-text {
+  order: 2;
 }
 
 .hero-image {
@@ -228,7 +233,6 @@ img {
     grid-template-columns: 1fr;
   }
   .about-image-wrap {
-    order: -1;
     max-width: 320px;
   }
 }
@@ -713,53 +717,84 @@ img {
   }
 
   .hero {
-    padding: 40px 0 60px;
+    padding: 40px 20px 60px;
   }
   .hero-content {
     flex-direction: column;
-    align-items: center;
-    gap: 24px;
+    align-items: stretch;
+    gap: 0;
     width: 100%;
     max-width: 100%;
   }
-  .hero-image-wrap {
-    top: 0;
-  }
+  /* Mobile: text first, then full-width portrait image (match reference layout) */
   .hero-text {
+    order: 1;
     min-width: 0;
     max-width: 100%;
-    text-align: center;
+    text-align: left;
+  }
+  .hero-image-wrap {
+    order: 2;
+    top: 0;
+    width: 100%;
+    margin-top: 24px;
+  }
+  .hero-greeting {
+    font-size: 2rem;
+    margin-bottom: 4px;
   }
   .hero-name {
     white-space: normal;
-    text-align: center;
-    font-size: 2.25rem;
+    text-align: left;
+    font-size: 2rem;
+    line-height: 1.2;
+    margin-bottom: 12px;
   }
   .hero-role.highlight-bar {
-    left: auto;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 16px;
-    padding-right: 16px;
-    text-align: center;
+    left: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px 16px;
+    text-align: left;
     width: fit-content;
+    max-width: 100%;
+    background: #8B6914;
+    color: #fff;
   }
   .hero-image {
-    width: 180px;
-    height: 180px;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 320px;
+    object-fit: cover;
+    object-position: center top;
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   }
 
   .about {
-    padding: 48px 16px 60px;
+    padding: 48px 20px 60px;
   }
   .about-inner {
-    gap: 28px;
+    gap: 32px;
     max-width: 100%;
+    display: flex;
+    flex-direction: column;
   }
+  /* Mobile: content first (Who I am, highlight bar, paragraphs), then image */
   .about-content {
+    order: 1;
     max-width: 100%;
     min-width: 0;
     width: 100%;
+  }
+  .about-image-wrap {
+    order: 2;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
   .about-paras {
     max-width: 100%;
@@ -767,20 +802,23 @@ img {
   .about-title {
     text-align: left;
   }
-  .about-subtitle {
+  .about-subtitle.highlight-bar {
     display: inline-block;
-  }
-  .about-image-wrap {
-    width: 100%;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
+    background: #8B6914;
+    color: #fff;
+    padding: 6px 14px;
+    margin-bottom: 20px;
   }
   .about-image {
     margin-top: 0;
     width: 100%;
     max-width: 100%;
     display: block;
+    min-height: 280px;
+    object-fit: cover;
+    border: none;
+    border-radius: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
   }
 
   .services {
@@ -790,20 +828,45 @@ img {
   .services-content {
     padding: 0 4px;
     max-width: 100%;
+    text-align: center;
+  }
+  .services-title {
+    font-size: 1.75rem;
+    color: #8B6914;
+  }
+  .services-underline {
+    background: #8B6914;
   }
   .services-cols {
     gap: 24px;
     margin-bottom: 32px;
+    text-align: left;
   }
-  .services-title {
-    font-size: 1.75rem;
+  .services-col h3 {
+    font-size: 1.1rem;
+  }
+  .btn-projects {
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    background: #8B6914;
+    text-align: center;
   }
 
   .projects {
-    padding: 48px 0 60px;
+    padding: 48px 20px 60px;
+    background: #f0f0f0;
   }
   .projects-header {
     margin-bottom: 32px;
+  }
+  .projects-main-title {
+    color: var(--text-primary);
+  }
+  .highlight-bar-projects {
+    background: #8B6914;
+    color: #fff;
   }
   .projects-grid {
     gap: 20px;
@@ -859,11 +922,9 @@ img {
   .container {
     padding: 0 16px;
   }
-  .hero-name {
-    font-size: 1.875rem;
-  }
+  .hero-name,
   .hero-greeting {
-    font-size: 0.875rem;
+    font-size: 1.75rem;
   }
   .hero-role {
     font-size: 1rem;
